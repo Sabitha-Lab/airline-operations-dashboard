@@ -56,11 +56,4 @@ airline-operations-revenue-dashboard/
 - **Flight revenue:** sum of flight-level revenue in `FactFlights`.
 - **Booking revenue:** ticket fare + ancillary revenue for Confirmed or Flown bookings. It is a separate booking-grain view; do not add it to flight revenue.
 
-## Resume project description
-Use after you have built and validated the dashboard:
-**Airline Operations & Revenue Tracking Dashboard | SQL, Power BI, Advanced Excel**
-- Analysed 130,000 synthetic flight and booking records using SQL (CTEs, joins, window functions) and Power Query, applying data-quality checks and a star-schema model.
-- Developed an interactive Power BI dashboard with DAX measures for departure OTP, load factor, cancellations, route revenue, booking-channel mix and delay drivers.
-- Evaluated route and time-band performance and modelled potential revenue-improvement scenarios with documented assumptions.
 
-Only mention a **14% revenue optimization opportunity** if your own reproducible analysis produces that result. Label it as a modelled opportunity, not realized revenue.
