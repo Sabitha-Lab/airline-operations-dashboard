@@ -1,0 +1,14 @@
+table,column,description,unit_or_type
+fact_flights,flight_id,Unique flight record identifier,Flight
+fact_flights,flight_date,Operating date,Date
+fact_flights,airline_id,Airline foreign key,Category
+fact_flights,origin_airport / destination_airport,Route endpoint airport codes,Category
+fact_flights,delay_minutes,Departure delay minutes,Minutes
+fact_flights,cancelled_flag,1 cancelled; 0 operated,Flag
+fact_flights,aircraft_capacity / passengers,Available seats and passengers carried,Count
+fact_flights,flight_revenue_inr,Synthetic flight-level revenue,INR
+fact_bookings,booking_id,Unique booking identifier,Booking
+fact_bookings,flight_id,Related flight identifier,Foreign key
+fact_bookings,booking_channel,"Website, Mobile App, Travel Agent or Corporate",Category
+fact_bookings,booking_status,"Confirmed, Flown, Cancelled or Refunded",Category
+fact_bookings,ticket_fare_inr / ancillary_revenue_inr,Booking ticket and ancillary amounts,INR

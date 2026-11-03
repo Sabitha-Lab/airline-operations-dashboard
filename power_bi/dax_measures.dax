@@ -1,0 +1,32 @@
+-- Date table (mark as Date table)
+Date = CALENDAR(MIN(FactFlights[flight_date]),MAX(FactFlights[flight_date]))
+Year = YEAR('Date'[Date])
+Month = FORMAT('Date'[Date],"MMM")
+Month Number = MONTH('Date'[Date])
+Year Month = FORMAT('Date'[Date],"YYYY-MMM")
+
+Scheduled Flights = COUNTROWS(FactFlights)
+Completed Flights = CALCULATE([Scheduled Flights],FactFlights[cancelled_flag]=0)
+Cancelled Flights = CALCULATE([Scheduled Flights],FactFlights[cancelled_flag]=1)
+Cancellation Rate % = DIVIDE([Cancelled Flights],[Scheduled Flights],0)
+On-Time Flights = CALCULATE([Completed Flights],FactFlights[delay_minutes]<=15)
+Departure OTP % = DIVIDE([On-Time Flights],[Completed Flights],0)
+Total Passengers = SUM(FactFlights[passengers])
+Available Seats = CALCULATE(SUM(FactFlights[aircraft_capacity]),FactFlights[cancelled_flag]=0)
+Load Factor % = DIVIDE([Total Passengers],[Available Seats],0)
+Average Departure Delay (Min) = CALCULATE(AVERAGE(FactFlights[delay_minutes]),FactFlights[cancelled_flag]=0)
+Total Delay Minutes = CALCULATE(SUM(FactFlights[delay_minutes]),FactFlights[cancelled_flag]=0)
+Flight Revenue (INR) = SUM(FactFlights[flight_revenue_inr])
+Average Revenue per Completed Flight = DIVIDE([Flight Revenue (INR)],[Completed Flights],0)
+
+-- Booking metrics are a separate grain; do not add them to flight revenue.
+Eligible Bookings = CALCULATE(COUNTROWS(FactBookings),FactBookings[booking_status] IN {"Confirmed","Flown"})
+Booking Revenue (INR) = CALCULATE(SUM(FactBookings[ticket_fare_inr])+SUM(FactBookings[ancillary_revenue_inr]),FactBookings[booking_status] IN {"Confirmed","Flown"})
+Ancillary Revenue (INR) = CALCULATE(SUM(FactBookings[ancillary_revenue_inr]),FactBookings[booking_status] IN {"Confirmed","Flown"})
+Ancillary Revenue per Eligible Booking = DIVIDE([Ancillary Revenue (INR)],[Eligible Bookings],0)
+
+-- Scenario only: model a 2 percentage-point load-factor increase.
+Incremental Revenue Scenario (2pp) =
+VAR ExtraPassengers = [Available Seats]*0.02
+VAR AvgFare = DIVIDE([Flight Revenue (INR)],[Total Passengers],0)
+RETURN ExtraPassengers*AvgFare
